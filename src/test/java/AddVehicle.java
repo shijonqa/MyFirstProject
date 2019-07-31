@@ -70,7 +70,8 @@ public class AddVehicle {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(5000);
+        Thread.sleep(6000);
+
 
 
     }

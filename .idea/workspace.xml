@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="758ce127-0cd1-4d8f-9c8d-d9809e653a32" name="Default Changelist" comment="" />
+    <list default="true" id="758ce127-0cd1-4d8f-9c8d-d9809e653a32" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/AddVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/AddVehicle.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,8 +57,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/AddVehicle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="18" column="21" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
+            <state relative-caret-position="339">
+              <caret line="72" column="22" selection-start-line="72" selection-start-column="22" selection-end-line="72" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -84,6 +88,9 @@
       <dir>$PROJECT_DIR$</dir>
     </dirStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -96,9 +103,9 @@
         <option value="$PROJECT_DIR$/src/test/java/SampleExcelWrite.java" />
         <option value="$PROJECT_DIR$/src/test/java/ExcelUtils.java" />
         <option value="$PROJECT_DIR$/src/test/java/ReadExcel.java" />
-        <option value="$PROJECT_DIR$/src/test/java/AddVehicle.java" />
         <option value="$PROJECT_DIR$/src/test/java/AddUser.java" />
         <option value="$PROJECT_DIR$/src/main/resources/Login.properties" />
+        <option value="$PROJECT_DIR$/src/test/java/AddVehicle.java" />
       </list>
     </option>
   </component>
@@ -115,6 +122,7 @@
     <option name="width" value="1279" />
     <option name="height" value="701" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -399,8 +407,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/AddVehicle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="18" column="21" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="21" />
+        <state relative-caret-position="339">
+          <caret line="72" column="22" selection-start-line="72" selection-start-column="22" selection-end-line="72" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
