@@ -2,19 +2,22 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 
-public class AddUser {
+public class AddAdmin {
 
     WebDriver driver;
     static Logger log = Logger.getLogger(AddVehicle.class);
@@ -76,8 +79,8 @@ public class AddUser {
     }
 
 
-    @Test
-    public void ContactRegistration_data()throws  Exception{
+    @Test(dataProvider = "getAdminData")
+    public void ContactRegistration_data(String FName,String MName,String LName,String JTitle,String PNumber,String E_mail,String Passwrd)throws  Exception{
 
 
         Thread.sleep(3000);
@@ -99,7 +102,7 @@ public class AddUser {
         log.info("ContactsUser is clicked.");
 
 
-        Thread.sleep(10000);
+        Thread.sleep(4000);
 
         WebElement AddContact=((ChromeDriver) driver).findElementByXPath("//span[text()='Add Contact']/parent::button[@type='button']");
         AddContact.click();
@@ -107,27 +110,27 @@ public class AddUser {
         Thread.sleep(2000);
 
         //choose a contact classification
-        WebElement ChooseClassification=((ChromeDriver) driver).findElementByXPath("//span[text()='User']//preceding::input[1]");
+        WebElement ChooseClassification=((ChromeDriver) driver).findElementByXPath("//input[@type='radio' and @value = '8']");
         ChooseClassification.click();
-        log.info("choose classification is clicked.");
+        log.info("choose classification Admin is selected.");
 
 
         Thread.sleep(1000);
         WebElement FirstName=((ChromeDriver) driver).findElementByXPath("//label[text()='First Name ']/following-sibling::input");
         FirstName.clear();
-        FirstName.sendKeys("test");
-        log.info("FirstName is entered");
+        FirstName.sendKeys(FName);
+        log.info("FirstName "+FName+" is entered");
 
         WebElement MiddleName=((ChromeDriver) driver).findElementByXPath("//label[text()='Middle Name']/following-sibling::input");
         MiddleName.clear();
-        MiddleName.sendKeys("test");
-        log.info("Middle name entered successfully");
+        MiddleName.sendKeys(MName);
+        log.info("Middle name "+MName+" entered successfully");
         Thread.sleep(1000);
 
         WebElement LastName=((ChromeDriver) driver).findElementByXPath("//label[text()='Last Name']/following-sibling::input");
         LastName.clear();
-        LastName.sendKeys("test");
-        log.info("LastName entered successfully");
+        LastName.sendKeys(LName);
+        log.info("LastName "+LName+" entered successfully");
         Thread.sleep(1000);
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -135,32 +138,20 @@ public class AddUser {
         js.executeScript("window.scrollBy(0,100)");
         log.info("scroll happens...");
 
-        Thread.sleep(1000);
-        WebElement Department=((ChromeDriver) driver).findElementByXPath("//label[text()='Department ']/following-sibling::div");
-        Department.click();
-        log.info("department choosed");
 
         Thread.sleep(1000);
-        //select which department
-     /*   String DeptName ="//li[text()='Orient Service']";
-        WebElement chooseDepartment=((ChromeDriver) driver).findElementByXPath(DeptName);
-        chooseDepartment.click();
-        log.info("Thumbay Labs dept is selected.");
-*/
-
-
-        WebElement JobTitle=((ChromeDriver) driver).findElementByXPath("//label[text()='Job Title']/following-sibling::input");
+               WebElement JobTitle=((ChromeDriver) driver).findElementByXPath("//label[text()='Job Title']/following-sibling::input");
         JobTitle.clear();
-        JobTitle.sendKeys("test");
-        log.info("JobTitle entered successfully");
+        JobTitle.sendKeys(JTitle);
+        log.info("JobTitle"+JTitle+" entered successfully");
         Thread.sleep(1000);
 
         WebElement DOB=((ChromeDriver) driver).findElementByXPath("//label[text()='Date of Birth']/following-sibling::span[@class='ant-calendar-picker']/child::div/child::input");
-       // DOB.click();
+        // DOB.click();
         Thread.sleep(1000);
-       // js.executeScript("document.value=’01-07-2019’;");
+        // js.executeScript("document.value=’01-07-2019’;");
         //WebElement DOB1=((ChromeDriver) driver).findElementByXPath("//label[text()='Date of Birth']/following-sibling::span[@class='ant-calendar-picker']/child::div/child::input");
-     //   DOB.sendKeys("01-07-2019");
+        //   DOB.sendKeys("01-07-2019");
         log.info("DOB entered successfully");
         Thread.sleep(1000);
 
@@ -169,14 +160,14 @@ public class AddUser {
 
         WebElement phone=((ChromeDriver) driver).findElementByXPath("//label[text()='Phone']/following-sibling::input");
         phone.clear();
-        phone.sendKeys("");
-        log.info("phone entered successfully");
+        phone.sendKeys(PNumber);
+        log.info("phone"+PNumber+" entered successfully");
         Thread.sleep(1000);
 
         WebElement Email=((ChromeDriver) driver).findElementByXPath("//label[text()='Email']/following-sibling::input");
         Email.clear();
-        Email.sendKeys("");
-        log.info("Email entered successfully");
+        Email.sendKeys(E_mail);
+        log.info("Email "+E_mail+"entered successfully");
         Thread.sleep(1000);
 
         WebElement Address1=((ChromeDriver) driver).findElementByXPath("//label[text()='Address 1']/following-sibling::input");
@@ -216,149 +207,88 @@ public class AddUser {
         log.info("Country entered successfully");
         Thread.sleep(1000);
 
-        WebElement EmployeeNumber=((ChromeDriver) driver).findElementByXPath("//label[text()='Employee Number']/following-sibling::input");
-        EmployeeNumber.clear();
-        EmployeeNumber.sendKeys("");
-        log.info("EmployeeNumber entered successfully");
-        Thread.sleep(1000);
-
-/*
-        WebElement StartDate=((ChromeDriver) driver).findElementByXPath("//label[text()='Start Date']/following-sibling::span[@class='ant-calendar-picker']/child::div/child::input");
-        StartDate.clear();
-        StartDate.sendKeys("02-07-2019");
-        log.info("StartDate entered successfully");
-        Thread.sleep(1000);
-
-        WebElement LeaveDate=((ChromeDriver) driver).findElementByXPath("//label[text()='Leave Date']/following-sibling::span[@class='ant-calendar-picker']/child::div/child::input");
-        LeaveDate.clear();
-        LeaveDate.sendKeys("02-07-2019");
-        log.info("LeaveDate entered successfully");
-        Thread.sleep(1000);
-*/
-
-
-        WebElement BloodGroup=((ChromeDriver) driver).findElementByXPath("//label[text()='Blood Group']/following-sibling::input");
-        BloodGroup.clear();
-        BloodGroup.sendKeys("");
-        log.info("BloodGroup entered successfully");
-        Thread.sleep(1000);
-
-        WebElement TotalExperience=((ChromeDriver) driver).findElementByXPath("//label[text()='Total Experience']/following-sibling::input");
-        TotalExperience.clear();
-        TotalExperience.sendKeys("");
-        log.info("TotalExperience entered successfully");
-        Thread.sleep(1000);
-
-        WebElement LicenseNumber=((ChromeDriver) driver).findElementByXPath("//label[text()='License Number']/following-sibling::input");
-        LicenseNumber.clear();
-        LicenseNumber.sendKeys("34623");
-        log.info("TotalExperience entered successfully");
-        Thread.sleep(1000);
-
-        WebElement LicenseClass=((ChromeDriver) driver).findElementByXPath("//label[text()='License Class']/following-sibling::input");
-        LicenseClass.clear();
-        LicenseClass.sendKeys("25");
-        log.info("LicenseClass entered successfully");
-        Thread.sleep(1000);
-
-        WebElement LicenseState=((ChromeDriver) driver).findElementByXPath("//label[text()='License State/ Province/ Region']/following-sibling::input");
-        LicenseState.clear();
-        LicenseState.sendKeys("32");
-        log.info("LicenseState entered successfully");
-        Thread.sleep(1000);
-
-        WebElement PassportNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Passport Number']/following-sibling::input");
-        PassportNo.clear();
-        PassportNo.sendKeys("32");
-        log.info("LicenseState entered successfully");
-        Thread.sleep(1000);
-
-        WebElement Note=((ChromeDriver) driver).findElementByXPath("//label[text()='Note']/following-sibling::textarea");
-        Note.clear();
-        Note.sendKeys("32");
-        log.info("Note entered successfully");
-        Thread.sleep(1000);
-
-
-
-
-
-
-
-
-
-        WebElement HourlyLabour=((ChromeDriver) driver).findElementByXPath("//label[text()='Hourly Labor rate']/following-sibling::input");
-        HourlyLabour.clear();
-        HourlyLabour.sendKeys("5");
-        log.info("HourlyLabour entered successfully");
-        Thread.sleep(1000);
-
-
         WebElement NxtBtn=((ChromeDriver) driver).findElementByXPath("//span[text()='Next']//parent::button");
         NxtBtn.click();
         log.info("NxtBtn entered successfully");
-        Thread.sleep(10000);
+        Thread.sleep(4000);
 
         WebElement EnableUserOn=((ChromeDriver) driver).findElementByXPath("//label[@class='ant-radio-button-wrapper']");
         EnableUserOn.click();
         log.info("Clicked enable user On");
-        Thread.sleep(3000);
-
-       WebElement Phone=((ChromeDriver) driver).findElementByXPath("//label[text()='Phone']/following-sibling::input[@type='text' and @class='ant-input' and @placeholder='']");
-        Phone.click();
-        log.info("click happened");
-       // Phone.clear();
-        js.executeScript("arguments[0].value='"+"573458347547"+"';", Phone);
-       // phone.sendKeys("12452345");
-        log.info("User phone number entered successfully");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
 
-       /*
-        WebElement Phone=((ChromeDriver) driver).findElementByXPath("(//input[contains(@type,'text')])[22]");
-        Phone.click();
-        log.info("click happened");
-        Phone.clear();
-       // js.executeScript("arguments[0].value='"+"hi"+"';", Phone);
-        phone.sendKeys("12452345");
-        log.info("User phone number entered successfully");
-        Thread.sleep(1000);
-        */
-
-
-
-
+/*
         WebElement UserEmail=((ChromeDriver) driver).findElementByXPath("(//input[contains(@type,'text')])[23]");
         UserEmail.click();
-       // UserEmail.clear();
-        UserEmail.sendKeys("test");
+        UserEmail.clear();
+        UserEmail.sendKeys(E_mail);
         //js.executeScript("arguments[0].value='"+"hi"+"';", UserEmail);
         log.info("UserEmail entered successfully");
         String MoveBack = Keys.chord(Keys.SHIFT, Keys.TAB);
         UserEmail.sendKeys(MoveBack);
-        driver.switchTo().activeElement().sendKeys("989898989");
+        driver.switchTo().activeElement().sendKeys(PNumber);
         Thread.sleep(1000);
-
+*/
         WebElement password=((ChromeDriver) driver).findElementByXPath("(//input[contains(@type,'password')])[1]");
         password.clear();
-        password.sendKeys("test");
+        password.sendKeys(Passwrd);
         log.info("Password entered successfully");
         Thread.sleep(1000);
 
         WebElement Cnfpassword=((ChromeDriver) driver).findElementByXPath("(//input[contains(@type,'password')])[2]");
         Cnfpassword.clear();
-        Cnfpassword.sendKeys("test");
+        Cnfpassword.sendKeys(Passwrd);
+        Cnfpassword.sendKeys(Keys.TAB);
+        Thread.sleep(1000);
+        driver.switchTo().activeElement().sendKeys(Keys.ARROW_DOWN);
+
+       // Cnfpassword.sendKeys(Keys.RETURN);
         log.info("cnfpassword entered successfully");
         Thread.sleep(1000);
+
+        WebElement choosedtimeformat=((ChromeDriver) driver).findElementByXPath("//li[@role='option' and text()='Asia/Kabul']");
+        choosedtimeformat.click();
+
+
+
+
 
         js.executeScript("window.scrollBy(0,400)");
 
         WebElement SaveBtn=((ChromeDriver) driver).findElementByXPath("//span[text()='Save']/parent::button");
         SaveBtn.click();
         log.info("Save button clicked successfully");
-        Thread.sleep(10000);
+
+        Wait<WebDriver> fluwait = new FluentWait<WebDriver>(driver)
+                .withTimeout(10, TimeUnit.SECONDS)
+                .pollingEvery(5, TimeUnit.MILLISECONDS)
+                .ignoring(NoSuchElementException.class);
+
+        WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
+            }
+        });
 
 
+
+        WebElement EnterText=((ChromeDriver) driver).findElementByXPath("//input[contains(@placeholder,'Eg. Contact Name, Department')]");
+        EnterText.sendKeys(FName);
+        EnterText.sendKeys(Keys.ENTER);
+
+        Thread.sleep(2000);
+
+
+
+
+
+    }
+
+    @DataProvider
+    public Object[][] getAdminData(){
+        Object data[][] = ExcelUtils.getTestData("AdminUser");
+        return data;
     }
 
 

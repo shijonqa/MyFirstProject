@@ -1,13 +1,19 @@
+import com.google.common.base.Function;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class RegisterLogin {
     WebDriver driver;
@@ -75,7 +81,6 @@ public class RegisterLogin {
 
         WebElement AcceptCheckBox= driver.findElement(By.xpath("//input[@type='checkbox' and @class = 'ant-checkbox-input']"));
         Thread.sleep(1000);
-        AcceptCheckBox.clear();
         AcceptCheckBox.click();
 
         Thread.sleep(1000);
@@ -83,6 +88,16 @@ public class RegisterLogin {
         StartUsingRevitBtn.click();
 
         Thread.sleep(3000);
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, SECONDS).pollingEvery(1, SECONDS).ignoring(NoSuchElementException.class);
+
+
+        WebElement Message = wait.until(new Function<WebDriver, WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(By.xpath("//div[@class='ant-message']/span/div"));
+            }
+        });
+        System.out.println("Message displayed is "+Message.getText());
+
     }
     @DataProvider
     public Object[][] getRegisterData(){
