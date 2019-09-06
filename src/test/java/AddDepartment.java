@@ -1,3 +1,4 @@
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.*;
@@ -7,6 +8,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
@@ -16,7 +18,7 @@ import java.util.function.Function;
 
 public class AddDepartment {
     WebDriver driver;
-    static Logger log = Logger.getLogger(AddVehicle.class);
+    static Logger log = Logger.getLogger(AddDepartment.class);
     SampleExcelWrite sampleExcelWrite;
     static String URL,UName,Passwrd;
 
@@ -45,7 +47,7 @@ public class AddDepartment {
         props.load(new FileInputStream("/home/shijon/Documents/comrevitsonev2/src/main/resources/log4j.properties"));
         PropertyConfigurator.configure(props);
         //PropertyConfigurator.configure("log4j.properties");
-        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(2)/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(1)/chromedriver");
         log.info("***************************************************************");
         log.info("******************Test Begins at this point********************");
         log.info("***************************************************************");
@@ -69,17 +71,8 @@ public class AddDepartment {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(4000);
+        Thread.sleep(6000);
 
-
-    }
-
-
-    @Test
-    public void ContactRegistration_data()throws  Exception{
-
-
-        Thread.sleep(3000);
         WebDriverWait wait=new WebDriverWait(driver, 20);
 
         WebElement MainMenu=((ChromeDriver) driver).findElementByXPath("//img[@alt='Menu' and @class='rone-menu-show']");
@@ -98,7 +91,15 @@ public class AddDepartment {
         log.info("Department is clicked.");
 
 
-        Thread.sleep(5000);
+        Thread.sleep(7000);
+
+    }
+
+
+    @Test(dataProvider = "getDeptData")
+    public void ContactRegistration_data(String cName,String uDept,String DeptName,String CDate,String EDate,String PNo,String MNo,String E_mail)throws  Exception{
+
+
 
         WebElement AddDepartmentBtn=((ChromeDriver) driver).findElementByXPath("//span[text()='Add Department']//parent::button");
         AddDepartmentBtn.click();
@@ -108,29 +109,30 @@ public class AddDepartment {
 
 
         Thread.sleep(1000);
-        WebElement CompanyName=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[3]");
+        WebElement CompanyName=((ChromeDriver) driver).findElementByXPath("//label[text()='Select the Company Name']//following-sibling::div[@class='ant-select ant-select-enabled']/child::div[@role='combobox']");
         CompanyName.click();
         log.info("Company is clicked");
 
         Thread.sleep(1000);
-        WebElement chooseCompany=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'qacompany1')]");
+        WebElement chooseCompany=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'"+cName+"')]");
         chooseCompany.click();
         log.info("company is choosen.");
 
         Thread.sleep(1000);
-        WebElement Upperdeptclick=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[4]");
+        WebElement Upperdeptclick=((ChromeDriver) driver).findElementByXPath("//label[text()='Upper Department']//following-sibling::div[@class='ant-select ant-select-enabled']/child::div[@role='combobox']");
         Upperdeptclick.click();
         log.info("Upperdeptclick is clicked");
-
         Thread.sleep(1000);
-        WebElement chooseUpperDept=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'FOR VEH TEST')]");
-        chooseUpperDept.click();
-        log.info("chooseUpperDept is choosen.");
-
+        if(!uDept.toLowerCase().contains("na")) {
+            log.info("chooseUpperDept is choosen." + uDept);
+            WebElement chooseUpperDept = ((ChromeDriver) driver).findElementByXPath("(//li[@role = 'option' and text()='" +uDept+ "'])[1]");
+            chooseUpperDept.click();
+            log.info("chooseUpperDept is choosen." + uDept);
+        }
         Thread.sleep(1000);
         WebElement DepartmentName=((ChromeDriver) driver).findElementByXPath("//label[text()='Department ']/following-sibling::input");
         DepartmentName.clear();
-        DepartmentName.sendKeys("Test");
+        DepartmentName.sendKeys(DeptName);
         log.info("department is clicked");
 
         Thread.sleep(1000);
@@ -141,7 +143,8 @@ public class AddDepartment {
         Thread.sleep(1000);
         WebElement createDate=((ChromeDriver) driver).findElementByXPath("//input[contains(@class,'ant-calendar-input ')]");
         createDate.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
-        createDate.sendKeys("2019-08-20");
+        createDate.sendKeys(CDate);
+        createDate.sendKeys(Keys.ENTER);
         log.info("entered the create date");
 
       /*  Thread.sleep(1000);
@@ -162,23 +165,25 @@ public class AddDepartment {
         Thread.sleep(1000);
         WebElement PhoneNumber=((ChromeDriver) driver).findElementByXPath("//label[text()='Phone No']/following-sibling::input");
         PhoneNumber.clear();
-        PhoneNumber.sendKeys("Test");
+        PhoneNumber.sendKeys(PNo);
         log.info("department is clicked");
 
         PhoneNumber.sendKeys(Keys.chord(Keys.SHIFT,Keys.TAB));
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);
-        driver.switchTo().activeElement().sendKeys("2019-08-20");
+        driver.switchTo().activeElement().sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
+        driver.switchTo().activeElement().sendKeys(EDate);
+        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
 
         Thread.sleep(1000);
         WebElement Mobnumber=((ChromeDriver) driver).findElementByXPath("//label[text()='Mobile No']/following-sibling::input");
         Mobnumber.clear();
-        Mobnumber.sendKeys("Test");
+        Mobnumber.sendKeys(MNo);
         log.info("department is clicked");
 
         Thread.sleep(1000);
         WebElement Email=((ChromeDriver) driver).findElementByXPath("//label[text()='Email']/following-sibling::input");
         Email.clear();
-        Email.sendKeys("Test");
+        Email.sendKeys(E_mail);
         log.info("department is clicked");
 
         WebElement SaveBtn=((ChromeDriver) driver).findElementByXPath("//button[@type='button'][contains(.,'Save')]");
@@ -187,18 +192,42 @@ public class AddDepartment {
 
 
         Wait<WebDriver> fluwait = new FluentWait<WebDriver>(driver)
-                .withTimeout(10, TimeUnit.SECONDS)
+                .withTimeout(5, TimeUnit.SECONDS)
                 .pollingEvery(5, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
 
-        WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("(//span[contains(.,'Department added sucessfully')])[2]"));
+
+        try
+        {
+            WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+                public WebElement apply(WebDriver driver) {
+                    return driver.findElement(By.xpath("(//span[contains(.,'Department added sucessfully')])[2]"));
+                }
+            });
+
+        }
+        catch (Exception e)
+        {
+            log.info("cannot able to save");
+            try
+            {
+                WebElement CancelBtn=((ChromeDriver) driver).findElementByXPath("//button[contains(.,'Cancel')]");
+                CancelBtn.click();
+                log.info("Cancel button clicked successfully");
+            }catch (Exception err)
+            {
+                log.info("Cancel button cannot able to click");
             }
-        });
+        }
         Thread.sleep(3000);
 
 
+    }
+
+    @DataProvider
+    public Object[][] getDeptData(){
+        Object data[][] = ExcelUtils.getTestData("Department");
+        return data;
     }
 
 

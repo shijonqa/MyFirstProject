@@ -49,7 +49,7 @@ public class AddAdmin {
         props.load(new FileInputStream("/home/shijon/Documents/comrevitsonev2/src/main/resources/log4j.properties"));
         PropertyConfigurator.configure(props);
         //PropertyConfigurator.configure("log4j.properties");
-        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(2)/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(1)/chromedriver");
         log.info("***************************************************************");
         log.info("******************Test Begins at this point********************");
         log.info("***************************************************************");
@@ -73,17 +73,8 @@ public class AddAdmin {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(4000);
+        Thread.sleep(6000);
 
-
-    }
-
-
-    @Test(dataProvider = "getAdminData")
-    public void ContactRegistration_data(String FName,String MName,String LName,String JTitle,String PNumber,String E_mail,String Passwrd)throws  Exception{
-
-
-        Thread.sleep(3000);
         WebDriverWait wait=new WebDriverWait(driver, 20);
 
         WebElement MainMenu=((ChromeDriver) driver).findElementByXPath("//img[@alt='Menu' and @class='rone-menu-show']");
@@ -100,6 +91,13 @@ public class AddAdmin {
         WebElement ContactListMenu=((ChromeDriver) driver).findElementByXPath("//a[text()='Contact List']");
         ContactListMenu.click();
         log.info("ContactsUser is clicked.");
+
+
+    }
+
+
+    @Test(dataProvider = "getAdminData")
+    public void ContactRegistration_data(String FName,String MName,String LName,String JTitle,String PNumber,String E_mail,String Passwrd)throws  Exception{
 
 
         Thread.sleep(4000);
@@ -127,11 +125,23 @@ public class AddAdmin {
         log.info("Middle name "+MName+" entered successfully");
         Thread.sleep(1000);
 
+
+
+
         WebElement LastName=((ChromeDriver) driver).findElementByXPath("//label[text()='Last Name']/following-sibling::input");
         LastName.clear();
         LastName.sendKeys(LName);
         log.info("LastName "+LName+" entered successfully");
         Thread.sleep(1000);
+
+
+        WebElement DisplayName=((ChromeDriver) driver).findElementByXPath("//label[text()='Dealer / Display Name']/following-sibling::input");
+        DisplayName.clear();
+        DisplayName.sendKeys(MName);
+        log.info("Display name "+DisplayName+" entered successfully");
+        Thread.sleep(1000);
+
+
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         Thread.sleep(1000);
@@ -265,19 +275,30 @@ public class AddAdmin {
                 .pollingEvery(5, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
 
-        WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
-            }
-        });
 
 
 
-        WebElement EnterText=((ChromeDriver) driver).findElementByXPath("//input[contains(@placeholder,'Eg. Contact Name, Department')]");
-        EnterText.sendKeys(FName);
-        EnterText.sendKeys(Keys.ENTER);
+        try {
+            WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+                public WebElement apply(WebDriver driver) {
+                    return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
+                }
+            });
+        }catch (Exception e)
+        {
+            log.info("No success message appears..");
 
-        Thread.sleep(2000);
+        }
+
+        try {
+            WebElement cancelbtn=driver.findElement(By.xpath("//button[@type='button'][contains(.,'Cancel')]"));
+            cancelbtn.click();
+        }catch (Exception e)
+        {
+            log.info("No such element present");
+
+        }
+
 
 
 

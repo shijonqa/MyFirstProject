@@ -1,8 +1,11 @@
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -11,7 +14,12 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 
 public class AddVehicle {
@@ -46,7 +54,7 @@ public class AddVehicle {
         props.load(new FileInputStream("/home/shijon/Documents/comrevitsonev2/src/main/resources/log4j.properties"));
         PropertyConfigurator.configure(props);
         //PropertyConfigurator.configure("log4j.properties");
-        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(2)/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(1)/chromedriver");
         log.info("***************************************************************");
         log.info("******************Test Begins at this point********************");
         log.info("***************************************************************");
@@ -70,7 +78,7 @@ public class AddVehicle {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(6000);
+        Thread.sleep(5000);
 
 
 
@@ -117,7 +125,9 @@ public class AddVehicle {
     }
 
     @Test(dataProvider="getCarModel")
-    public void Registration_data(String CarName,String DevId,String LicPlate,String vin,String make,String trim,String model,String year,String vehicleType,String dept)throws  Exception{
+    public void Registration_data(String CarName,String DevId,String LicPlate,String vin,String make,String trim,String model,String year,String vehicleType,String dept,String dsim,
+                                  String DinstallDate,String DExprDate,String Slimit,String CmpNam,String Vownnam,
+                                  String SplType,String SerNo,String Tamser,String TechNam,String Applstd,String Icount,String eno,String cno)throws  Exception{
 
 
         Thread.sleep(4000);
@@ -141,16 +151,74 @@ public class AddVehicle {
         log.info("vehicle name is visible");
         WebElement VehicleName=((ChromeDriver) driver).findElementByXPath("//label[text()='Vehicle Name ']/following-sibling::input");
         VehicleName.sendKeys(CarName);
-        log.info("Text entered successfully");
+        log.info("Vehicle name entered successfully"+CarName);
 
 
         Thread.sleep(1000);
 
         WebElement DeviceId=((ChromeDriver) driver).findElementByXPath("//label[text()='Device ID(D id) ']/following-sibling::input");
         DeviceId.clear();
-        log.info("Device id cleared");
+        log.info("Device id cleared"+DevId);
         DeviceId.sendKeys(DevId);
         log.info("device id entered");
+
+
+
+        WebElement DeSimId=((ChromeDriver) driver).findElementByXPath("//label[text()='Device SIM Number ']/following-sibling::input");
+        DeSimId.clear();
+        log.info("sim id cleared");
+        DeSimId.sendKeys(dsim);
+        log.info("sim id entered");
+
+
+
+        //Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(DinstallDate);
+        log.info("installed"+DinstallDate);
+
+
+        WebElement DInstallDate=((ChromeDriver) driver).findElementByXPath("(//input[@placeholder='Install Date'])[1]");
+        log.info("device install date clicked");
+        DInstallDate.click();
+        WebElement DInstallEnter=((ChromeDriver) driver).findElementByXPath("(//input[@placeholder='Install Date'])[2]");
+        log.info("device install date clicked");
+        DInstallEnter.sendKeys(DinstallDate);
+        DInstallEnter.sendKeys(Keys.ENTER);
+        log.info("sim id entered");
+
+
+        WebElement DExpDate=((ChromeDriver) driver).findElementByXPath("(//input[@placeholder='Expiry Date'])[1]");
+        log.info("Device exp clicked");
+        DExpDate.click();
+        WebElement DExpDateEnter=((ChromeDriver) driver).findElementByXPath("(//input[@placeholder='Expiry Date'])[2]");
+        log.info("device install date clicked");
+        DExpDateEnter.sendKeys(DExprDate);
+        DExpDateEnter.sendKeys(Keys.ENTER);
+        log.info("sim id entered");
+
+        Thread.sleep(3000);
+/*
+        WebElement DExpDate=((ChromeDriver) driver).findElementByXPath("//input[@placeholder='Expiry Date']");
+        DExpDate.clear();
+        log.info("sim id cleared");
+        DExpDate.sendKeys(DExprDate);
+        log.info("sim id entered");
+
+*/
+
+
+        WebElement EngineNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Engine Number']/following-sibling::input");
+        EngineNo.clear();
+        EngineNo.sendKeys(eno);
+        log.info("Engine number added successfully");
+
+
+        WebElement ChaseNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Chasis Number']/following-sibling::input");
+        ChaseNo.clear();
+        ChaseNo.sendKeys(cno);
+        log.info("Chase number added successfully");
+
+
+
 
         WebElement LicensePlate=((ChromeDriver) driver).findElementByXPath("//label[text()='License Plate ']/following-sibling::input");
         LicensePlate.clear();
@@ -207,6 +275,11 @@ public class AddVehicle {
         Year.sendKeys(year);
         log.info("Year added");
 
+        WebElement Speedlimit=((ChromeDriver) driver).findElement(By.id("errorMaxSpeed"));
+        Speedlimit.clear();
+        Speedlimit.sendKeys(Slimit);
+        log.info("speed limiter added");
+
 
 
         WebElement Status=((ChromeDriver) driver).findElementByXPath("//label[text()='Status ']/following-sibling::div");
@@ -219,18 +292,33 @@ public class AddVehicle {
         chooseStatus.click();
         log.info("Active status choosed");
 
+        Thread.sleep(1000);
+        WebElement company=((ChromeDriver) driver).findElementById("errorDepartment");
+        company.click();
+        log.info("company choosed");
+
+        Thread.sleep(1000);
+        //select which department
+        String compname ="//li[text()='"+CmpNam+"']";
+        WebElement comname=((ChromeDriver) driver).findElementByXPath(compname);
+        comname.click();
+        log.info("warehouse dept is selected.");
+
 
         Thread.sleep(1000);
         WebElement Department=((ChromeDriver) driver).findElementByXPath("//label[text()='Department ']/following-sibling::div");
         Department.click();
-        log.info("department choosed");
+        log.info("department clicked");
 
         Thread.sleep(1000);
         //select which department
-        String DeptName ="//li[text()='"+dept+"']";
+        String DeptName ="//li[@role='option' and @class='ant-select-dropdown-menu-item' and text()='"+dept+"']";
+
+        log.info("dept xpath "+DeptName);
+
         WebElement chooseDepartment=((ChromeDriver) driver).findElementByXPath(DeptName);
         chooseDepartment.click();
-        log.info("warehouse dept is selected.");
+        log.info(dept+" dept is selected");
 
 
         WebElement OwnerShip=((ChromeDriver) driver).findElementByXPath("//label[text()='Ownership ']/following-sibling::div");
@@ -245,26 +333,94 @@ public class AddVehicle {
         chooseOwnerShip.click();
         log.info("owned is selected..");
 
+
+
+
+        WebElement Vown=((ChromeDriver) driver).findElementByXPath("//label[text()='Vehicle Owner']/following-sibling::input");
+        Vown.clear();
+        Vown.sendKeys(Vownnam);
+        log.info("owner added "+Vownnam);
+
+        Thread.sleep(1000);
+        WebElement SplimiterType=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[6]");
+        SplimiterType.click();
+        log.info("speed limiter choosed");
+
+        Thread.sleep(1000);
+        //select which department
+        String speedLimit ="//li[text()='Cable Control']";
+        WebElement choosespeedLimit=((ChromeDriver) driver).findElementByXPath(speedLimit);
+        choosespeedLimit.click();
+        log.info("choosespeedLimit is selected.");
+
+
+        WebElement SNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Serial Number']/following-sibling::input");
+        SNo.clear();
+        SNo.sendKeys(SerNo);
+        log.info("Year added");
+
+        WebElement Tseal=((ChromeDriver) driver).findElementByXPath("//label[text()='Tamper Seal Number']/following-sibling::input");
+        Tseal.clear();
+        Tseal.sendKeys(Tamser);
+        log.info("Year added");
+
+
+        WebElement TName=((ChromeDriver) driver).findElementByXPath("//label[text()='Technician Name']/following-sibling::input");
+        TName.clear();
+        TName.sendKeys(TechNam);
+        log.info("Tech added");
+
+
+        WebElement AppStd=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[7]");
+        AppStd.click();
+
+        log.info("Appstd clicked");
+
+        Thread.sleep(1000);
+        //select which department
+        String Apstd ="//li[text()='"+Applstd+"']";
+        WebElement chooseAppStd=((ChromeDriver) driver).findElementByXPath(Apstd);
+        chooseAppStd.click();
+        log.info("chooseAppStd is selected.");
+
+
+
+        WebElement Icountry=((ChromeDriver) driver).findElementByXPath("//label[text()='Installation Country']/following-sibling::input");
+        Icountry.clear();
+        Icountry.sendKeys(Icount);
+        log.info("Installed country added");
+
+
         Thread.sleep(1000);
 
         WebElement Save=((ChromeDriver) driver).findElementByXPath("//span[text()='Save']/ancestor::button[@class='ant-btn rone-btn']");
         Save.click();
-        Thread.sleep(500);
-        try {
-
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[text()='Device Added Successfully']"))));
-            // Assert.assertTrue(true, (driver.findElement(By.xpath("//span[text()='Device added successfully']")).getText()));
+        Thread.sleep(7000);
+        try{
+            newTabClose();
         }
-        catch (NoSuchElementException e)
+        catch (Exception e)
         {
-            System.out.println("****Vehicle doesn't added*******"+LicPlate);
-            String[] data={CarName.toString(),DevId.toString(),LicPlate.toString(),make.toString(),trim.toString(),model.toString(),vin.toString(),year.toString()};
-            for(int i=0;i<data.length;i++)
-            {
-                log.info(data[i]);
-            }
-            sampleExcelWrite =new SampleExcelWrite();
-            sampleExcelWrite.writeExcel("/home/shijon/Documents/AlreadyExistingVehicle.xlsx","Sheet1",data);
+            log.info("certificate not generated"+e);
+        }
+        Wait<WebDriver> fluwait = new FluentWait<WebDriver>(driver)
+                .withTimeout(10, TimeUnit.SECONDS)
+                .pollingEvery(5, TimeUnit.MILLISECONDS)
+                .ignoring(NoSuchElementException.class);
+
+
+
+
+        try {
+            WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+                public WebElement apply(WebDriver driver) {
+                    return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
+                }
+            });
+        }catch (Exception e)
+        {
+            log.info("No success message appears..");
+
         }
 
     }
@@ -280,5 +436,16 @@ public class AddVehicle {
     {
 
         driver.close();
+        driver.quit();
+    }
+
+    public void newTabClose()
+    {
+        ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+
+        driver.switchTo().window(tabs2.get(1));
+        driver.close();
+        driver.switchTo().window(tabs2.get(0));
+
     }
 }

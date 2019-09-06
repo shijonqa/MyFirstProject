@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.*;
@@ -45,7 +46,7 @@ public class AddCompany {
         props.load(new FileInputStream("/home/shijon/Documents/comrevitsonev2/src/main/resources/log4j.properties"));
         PropertyConfigurator.configure(props);
         //PropertyConfigurator.configure("log4j.properties");
-        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(2)/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(1)/chromedriver");
         log.info("***************************************************************");
         log.info("******************Test Begins at this point********************");
         log.info("***************************************************************");
@@ -69,17 +70,9 @@ public class AddCompany {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(4000);
+        Thread.sleep(6000);
 
 
-    }
-
-
-    @Test
-    public void ContactRegistration_data()throws  Exception{
-
-
-        Thread.sleep(3000);
         WebDriverWait wait=new WebDriverWait(driver, 20);
 
         WebElement MainMenu=((ChromeDriver) driver).findElementByXPath("//img[@alt='Menu' and @class='rone-menu-show']");
@@ -100,6 +93,16 @@ public class AddCompany {
 
         Thread.sleep(10000);
 
+
+    }
+
+
+    @Test(dataProvider = "getCompanyData")
+    public void ContactRegistration_data(String Cname,String Cemail,String CPhone,String CMob,String CAddress,String CStreet,String CCity,
+    String Cstate,String CZip,String CCreatedDate,String CExpirydate,String Clog,String Clat)throws  Exception{
+
+
+
         WebElement AddCompany=((ChromeDriver) driver).findElementByXPath("//span[text()='Add Company']//parent::button");
         AddCompany.click();
         log.info("AddButton is clicked.");
@@ -110,18 +113,18 @@ public class AddCompany {
         Thread.sleep(1000);
         WebElement CompanyName=((ChromeDriver) driver).findElementByXPath("//label[text()='Company Name']/following-sibling::input");
         CompanyName.clear();
-        CompanyName.sendKeys("test");
+        CompanyName.sendKeys(Cname);
         log.info("Company is entered");
 
         WebElement Email=((ChromeDriver) driver).findElementByXPath("//label[text()='Email']/following-sibling::input");
         Email.clear();
-        Email.sendKeys("test");
+        Email.sendKeys(Cemail);
         log.info("Email entered successfully");
         Thread.sleep(1000);
 
         WebElement phone=((ChromeDriver) driver).findElementByXPath("//label[text()='Phone']/following-sibling::input");
         phone.clear();
-        phone.sendKeys("test");
+        phone.sendKeys(CPhone);
         log.info("LastName entered successfully");
         Thread.sleep(1000);
 
@@ -132,25 +135,36 @@ public class AddCompany {
 
 
         WebElement Mobile=((ChromeDriver) driver).findElementByXPath("//label[text()='Mobile']/following-sibling::input");
-        Mobile.sendKeys("452463523");
+        Mobile.sendKeys(CMob);
         log.info("Mobile choosed");
 
         Thread.sleep(1000);
         WebElement Address=((ChromeDriver) driver).findElementByXPath("//label[text()='Address']/following-sibling::input");
-        Address.sendKeys("Test");
+        Address.sendKeys(CAddress);
         log.info("Address choosed");
 
+        Thread.sleep(1000);
+        WebElement Street=((ChromeDriver) driver).findElementByXPath("//label[text()='Street']/following-sibling::input");
+        Street.sendKeys(CStreet);
+        log.info("Street choosed");
+
+        Thread.sleep(1000);
+        WebElement city=((ChromeDriver) driver).findElementByXPath("//label[text()='City']/following-sibling::input");
+        city.sendKeys(CCity);
+        log.info("city choosed");
 
         Thread.sleep(1000);
         WebElement state=((ChromeDriver) driver).findElementByXPath("//label[text()='State']/following-sibling::input");
-        state.sendKeys("Teste");
+        state.sendKeys(Cstate);
         log.info("state choosed");
+
+
 
 
 
         Thread.sleep(1000);
         WebElement Zip=((ChromeDriver) driver).findElementByXPath("//label[text()='Zip']/following-sibling::input");
-        Zip.sendKeys("testte");
+        Zip.sendKeys(CZip);
         log.info("Zip choosed");
 
 
@@ -163,26 +177,31 @@ public class AddCompany {
         Thread.sleep(1000);
         WebElement EnterDate=((ChromeDriver) driver).findElementByXPath("//input[contains(@class,'ant-calendar-input ')]");
         EnterDate.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
-        EnterDate.sendKeys("2019-08-19");
+        EnterDate.sendKeys(CCreatedDate);
         log.info("Choosen the date.");
 
 
         Thread.sleep(3000);
         WebElement ExpiryDate=((ChromeDriver) driver).findElementByXPath("(//input[@placeholder='Eg.2019-03-05'])[2]");
         ExpiryDate.click();
+
         log.info("Expiry date text box is clicked.");
 
-        Thread.sleep(1000);
-        WebElement ExpDate=((ChromeDriver) driver).findElementByXPath("//input[contains(@class,'ant-calendar-input ')]");
-        ExpDate.sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
-        ExpDate.sendKeys("2019-08-20");
-        log.info("entered the expired date");
-
-        js.executeScript("window.scrollBy(0,150)");
-        log.info("Scrolling occurs");
 
         Thread.sleep(1000);
-        WebElement Currency=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'rendered')])[3]");
+        WebElement Logitute=((ChromeDriver) driver).findElementByXPath("//label[text()='Longitude']/following-sibling::input");
+        Logitute.sendKeys(Clog);
+        log.info("Logitute choosed");
+
+        Thread.sleep(1000);
+        WebElement Latitude=((ChromeDriver) driver).findElementByXPath("//label[text()='Latitude']/following-sibling::input");
+        Latitude.sendKeys(Clat);
+        log.info("Latitude choosed");
+
+
+
+        Thread.sleep(1000);
+        WebElement Currency=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'rendered')])[4]");
         Currency.click();
         log.info("Currency drop down clicked");
 
@@ -193,7 +212,7 @@ public class AddCompany {
 
 
         Thread.sleep(1000);
-        WebElement ShortFormatDate=((ChromeDriver) driver).findElementByXPath("(//div[@class='ant-select-selection__rendered'])[4]");
+        WebElement ShortFormatDate=((ChromeDriver) driver).findElementByXPath("(//div[@class='ant-select-selection__rendered'])[5]");
         ShortFormatDate.click();
         log.info("short format drop down clicked.");
 
@@ -204,27 +223,27 @@ public class AddCompany {
         log.info("short date format is clicked.");
 
         Thread.sleep(1000);
-        WebElement TimeFormat=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[5]");
+        WebElement TimeFormat=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'rendered')])[6]");
         TimeFormat.click();
         log.info("time format clicked");
 
         Thread.sleep(1000);
-        WebElement TimeFormatclick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'12 hr')]");
+        WebElement TimeFormatclick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'12-hour clock')]");
         TimeFormatclick.click();
         log.info("time format is choosed");
 
         Thread.sleep(1000);
-        WebElement TimeZone=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[6]");
+        WebElement TimeZone=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[7]");
         TimeZone.click();
         log.info("Time zone is clicked.");
 
         Thread.sleep(1000);
-        WebElement TimeZoneClick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'UAE (GMT +4)')]");
+        WebElement TimeZoneClick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'Ethiopia (GMT +3)')]");
         TimeZoneClick.click();
         log.info("Time zone is choosen.");
 
         Thread.sleep(1000);
-        WebElement Usage=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[7]");
+        WebElement Usage=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[8]");
         Usage.click();
         log.info("Usage is clicked.");
 
@@ -234,7 +253,7 @@ public class AddCompany {
         log.info("Usage is chosen");
 
         Thread.sleep(1000);
-        WebElement Fuel =((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[8]");
+        WebElement Fuel =((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[9]");
         Fuel.click();
         log.info("Type of fuel is clicked.");
 
@@ -260,6 +279,12 @@ public class AddCompany {
         });
         Thread.sleep(3000);
 
+    }
+
+    @DataProvider
+    public Object[][] getCompanyData(){
+        Object data[][] = ExcelUtils.getTestData("Company");
+        return data;
     }
 
 

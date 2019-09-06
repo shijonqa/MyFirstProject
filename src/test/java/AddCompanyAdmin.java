@@ -49,7 +49,7 @@ public class AddCompanyAdmin {
         props.load(new FileInputStream("/home/shijon/Documents/comrevitsonev2/src/main/resources/log4j.properties"));
         PropertyConfigurator.configure(props);
         //PropertyConfigurator.configure("log4j.properties");
-        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(2)/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/home/shijon/Downloads/chromedriver_linux64(1)/chromedriver");
         log.info("***************************************************************");
         log.info("******************Test Begins at this point********************");
         log.info("***************************************************************");
@@ -73,17 +73,8 @@ public class AddCompanyAdmin {
         WebElement LoginButton=((ChromeDriver) driver).findElementByXPath("//button[@type='button']");
         LoginButton.click();
         log.info("Login button clicked");
-        Thread.sleep(4000);
 
-
-    }
-
-
-    @Test(dataProvider = "getAdminData")
-    public void ContactRegistration_data(String FName,String MName,String LName,String JTitle,String PNumber,String E_mail,String Passwrd)throws  Exception{
-
-
-        Thread.sleep(3000);
+        Thread.sleep(6000);
         WebDriverWait wait=new WebDriverWait(driver, 20);
 
         WebElement MainMenu=((ChromeDriver) driver).findElementByXPath("//img[@alt='Menu' and @class='rone-menu-show']");
@@ -100,6 +91,16 @@ public class AddCompanyAdmin {
         WebElement ContactListMenu=((ChromeDriver) driver).findElementByXPath("//a[text()='Contact List']");
         ContactListMenu.click();
         log.info("ContactsUser is clicked.");
+
+
+    }
+
+
+    @Test(dataProvider = "getAdminData")
+    public void ContactRegistration_data(String FName,String MName,String LName,String JTitle,String PNumber,String E_mail,String Passwrd)throws  Exception{
+
+
+
 
 
         Thread.sleep(4000);
@@ -265,19 +266,34 @@ public class AddCompanyAdmin {
                 .pollingEvery(5, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
 
-        WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
-            }
-        });
+
+        try {
+            WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+                public WebElement apply(WebDriver driver) {
+                    return driver.findElement(By.xpath("//span[contains(.,'User Created Successfully')]"));
+                }
+            });
+        }catch (Exception e)
+        {
+            log.info("No success message appears..");
+
+        }
+
+        try {
+         WebElement cancelbtn=driver.findElement(By.xpath("//button[@type='button'][contains(.,'Cancel')]"));
+            cancelbtn.click();
+        }catch (Exception e)
+        {
+            log.info("No such element present");
+
+        }
 
 
-
-        WebElement EnterText=((ChromeDriver) driver).findElementByXPath("//input[contains(@placeholder,'Eg. Contact Name, Department')]");
-        EnterText.sendKeys(FName);
-        EnterText.sendKeys(Keys.ENTER);
-
-        Thread.sleep(2000);
+//        WebElement EnterText=((ChromeDriver) driver).findElementByXPath("//input[contains(@placeholder,'Eg. Contact Name, Department')]");
+//        EnterText.sendKeys(FName);
+//        EnterText.sendKeys(Keys.ENTER);
+//
+//        Thread.sleep(2000);
 
 
 
