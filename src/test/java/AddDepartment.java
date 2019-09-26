@@ -37,6 +37,7 @@ public class AddDepartment {
             Passwrd  = loginprops.getProperty("Password");
 
 
+
         }
         catch (Exception e)
         {
@@ -100,7 +101,7 @@ public class AddDepartment {
     public void ContactRegistration_data(String cName,String uDept,String DeptName,String CDate,String EDate,String PNo,String MNo,String E_mail)throws  Exception{
 
 
-
+        log.info(cName+uDept+"DeptName\n"+DeptName+CDate+EDate+PNo+"\nmob\n"+MNo+E_mail+E_mail);
         WebElement AddDepartmentBtn=((ChromeDriver) driver).findElementByXPath("//span[text()='Add Department']//parent::button");
         AddDepartmentBtn.click();
         log.info("Add Department is clicked.");
@@ -123,16 +124,25 @@ public class AddDepartment {
         Upperdeptclick.click();
         log.info("Upperdeptclick is clicked");
         Thread.sleep(1000);
+        log.info("ALAM");
         if(!uDept.toLowerCase().contains("na")) {
-            log.info("chooseUpperDept is choosen." + uDept);
-            WebElement chooseUpperDept = ((ChromeDriver) driver).findElementByXPath("(//li[@role = 'option' and text()='" +uDept+ "'])[1]");
-            chooseUpperDept.click();
+            log.info("chooseUpperDept is choosen a." + uDept);
+            try {
+                Thread.sleep(1000);
+                WebElement chooseUpperDept = ((ChromeDriver) driver).findElementByXPath("(//li[@role = 'option' and @class='ant-select-dropdown-menu-item' and text()='" +uDept+ "'])[1]");
+                chooseUpperDept.click();
+            }catch (Exception err){
+                log.error(err);
+                Thread.sleep(1000);
+            }
             log.info("chooseUpperDept is choosen." + uDept);
         }
         Thread.sleep(1000);
         WebElement DepartmentName=((ChromeDriver) driver).findElementByXPath("//label[text()='Department ']/following-sibling::input");
+        DepartmentName.click();
+        Thread.sleep(1000);
         DepartmentName.clear();
-        DepartmentName.sendKeys(DeptName);
+        DepartmentName.sendKeys(MNo);
         log.info("department is clicked");
 
         Thread.sleep(1000);
@@ -165,13 +175,13 @@ public class AddDepartment {
         Thread.sleep(1000);
         WebElement PhoneNumber=((ChromeDriver) driver).findElementByXPath("//label[text()='Phone No']/following-sibling::input");
         PhoneNumber.clear();
-        PhoneNumber.sendKeys(PNo);
+        PhoneNumber.sendKeys(EDate);
         log.info("department is clicked");
 
         PhoneNumber.sendKeys(Keys.chord(Keys.SHIFT,Keys.TAB));
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);
         driver.switchTo().activeElement().sendKeys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE));
-        driver.switchTo().activeElement().sendKeys(EDate);
+        driver.switchTo().activeElement().sendKeys(E_mail);
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);
 
         Thread.sleep(1000);
@@ -183,7 +193,7 @@ public class AddDepartment {
         Thread.sleep(1000);
         WebElement Email=((ChromeDriver) driver).findElementByXPath("//label[text()='Email']/following-sibling::input");
         Email.clear();
-        Email.sendKeys(E_mail);
+        Email.sendKeys(PNo);
         log.info("department is clicked");
 
         WebElement SaveBtn=((ChromeDriver) driver).findElementByXPath("//button[@type='button'][contains(.,'Save')]");
@@ -238,3 +248,11 @@ public class AddDepartment {
         driver.close();
     }
 }
+//Orient
+//        2015-07-28
+//        DeptName2016-07-27
+//        971566907873971566907873
+//        sumit@otrac.ae
+//Orient
+//        2015-07-28
+//        2015-07-28

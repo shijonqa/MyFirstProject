@@ -1,19 +1,44 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
+
 import org.apache.poi.ss.usermodel.DataFormatter;
+
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 
 public class ExcelWrite {
     public static XSSFWorkbook workbook;
     public static XSSFSheet worksheet;
     public String ColName="CarModel";
     public int col_num;
-    @Test
+
     public void WriteResultInExcel()
     {
 
@@ -34,12 +59,63 @@ public class ExcelWrite {
     }
 
 
+    public void WriteData(String err[])
+    {
+     int i=1;
+
+        try {
+
+            FileInputStream file = new FileInputStream(new File("/home/shijon/Documents/DataExcel.xls"));
+
+            HSSFWorkbook workbook = new HSSFWorkbook(file);
+            HSSFSheet sheet = workbook.getSheet("test");
+           // Cell cell = null;
+
+            //Update the value of cell
+
+            for(int j=0;j>err.length;j++)
+            {
+                sheet.createRow(i).createCell(j).setCellValue(err[j]);
+                i++;
+            }
+
+
+
+
+
+            file.close();
+
+            FileOutputStream outFile =new FileOutputStream(new File("/home/shijon/Documents/DataExcel.xls"));
+            workbook.write(outFile);
+            outFile.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void WriteResult(String Ress, int DR) throws Exception
     {
-        FileInputStream file_input_stream= new FileInputStream("/home/shijon/Documents/CarModel.xlsx");
+        FileInputStream file_input_stream= new FileInputStream("/home/shijon/Documents/Login.xlsx");
         workbook=new XSSFWorkbook(file_input_stream);
-        worksheet=workbook.getSheet("excelwrite");
+        worksheet=workbook.getSheet("Log");
         XSSFRow Row=worksheet.getRow(0);
 
         int sheetIndex=workbook.getSheetIndex("excelwrite");
@@ -84,7 +160,7 @@ public class ExcelWrite {
             }
 
         }
-        FileOutputStream file_output_stream=new FileOutputStream("/home/shijon/Documents/CarModel.xlsx");
+        FileOutputStream file_output_stream=new FileOutputStream("/home/shijon/Documents/Login.xlsx");
         workbook.write(file_output_stream);
         file_output_stream.close();
         if(col_num==-1) {

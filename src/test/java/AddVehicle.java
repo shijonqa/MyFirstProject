@@ -209,7 +209,9 @@ public class AddVehicle {
         WebElement EngineNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Engine Number']/following-sibling::input");
         EngineNo.clear();
         EngineNo.sendKeys(eno);
-        log.info("Engine number added successfully");
+//        EngineNo.sendKeys(Keys.chord(Keys.SHIFT,Keys.TAB));
+//        driver.switchTo().activeElement().sendKeys(DExprDate,Keys.ENTER);
+//        log.info("Engine number added successfully");
 
 
         WebElement ChaseNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Chasis Number']/following-sibling::input");
@@ -293,39 +295,76 @@ public class AddVehicle {
         log.info("Active status choosed");
 
         Thread.sleep(1000);
-        WebElement company=((ChromeDriver) driver).findElementById("errorDepartment");
+        WebElement company=((ChromeDriver) driver).findElementById("errorCompany");
         company.click();
         log.info("company choosed");
-
-        Thread.sleep(1000);
+        log.info("ALAMMMMMMMMMMMMMMMMM"+CmpNam);
+//        Thread.sleep(1000);
         //select which department
-        String compname ="//li[text()='"+CmpNam+"']";
-        WebElement comname=((ChromeDriver) driver).findElementByXPath(compname);
-        comname.click();
+        String compname ="//li[text()=' "+CmpNam+" ']";
+        js.executeScript("window.scrollBy(0,500)");
+        Thread.sleep(1000);
+        try {
+            WebElement comname=((ChromeDriver) driver).findElementByXPath(compname);
+            comname.click();
+            log.info(dept + " dept is selected");
+        }catch (Exception e) {
+            try {
+                String compname2 = "//li[text()='" + CmpNam + "']";
+                WebElement comname2 = ((ChromeDriver) driver).findElementByXPath(compname2);
+                comname2.click();
+            }catch (Exception err){
+                log.info("Unable to find Department");
+            }
+        }
         log.info("warehouse dept is selected.");
 
 
-        Thread.sleep(1000);
-        WebElement Department=((ChromeDriver) driver).findElementByXPath("//label[text()='Department ']/following-sibling::div");
+        Thread.sleep(4000);
+        WebElement Department=((ChromeDriver) driver).findElementById("errorDepartment");
         Department.click();
         log.info("department clicked");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         //select which department
-        String DeptName ="//li[@role='option' and @class='ant-select-dropdown-menu-item' and text()='"+dept+"']";
+        String DeptName ="//li[@role='option' and unselectable='on' and @class='ant-select-dropdown-menu-item ant-select-dropdown-menu-item-active' and contains(text(),'"+dept+"')]";
+        String DeptName2="//li[@role='option' and @aria-selected='false'and contains(text(),'"+dept+"')]";
 
+        String DeptName1 ="//li[@role='option' and unselectable='on' and @class='ant-select-dropdown-menu-item' and text()='"+dept+"']";
         log.info("dept xpath "+DeptName);
-
-        WebElement chooseDepartment=((ChromeDriver) driver).findElementByXPath(DeptName);
-        chooseDepartment.click();
-        log.info(dept+" dept is selected");
-
-
+        Thread.sleep(1000);
+        try {
+            WebElement chooseDepartment = ((ChromeDriver) driver).findElementByXPath(DeptName);
+            chooseDepartment.click();
+            log.info(dept + " dept is selected");
+        }catch (Exception e)
+        {
+            log.info("error in department");
+            try {
+                WebElement chooseDepartment = ((ChromeDriver) driver).findElementByXPath(DeptName1);
+                chooseDepartment.click();
+                log.info(dept + " dept is selected");
+            }
+            catch (Exception er)
+            {
+                log.info("error in department");
+                try {
+                    WebElement chooseDepartment = ((ChromeDriver) driver).findElementByXPath(DeptName2);
+                    chooseDepartment.click();
+                    log.info(dept + " dept is selected");
+                }
+                catch (Exception er1)
+                {
+                    log.info("error in department");
+                }
+            }
+        }
+        Thread.sleep(2000);
         WebElement OwnerShip=((ChromeDriver) driver).findElementByXPath("//label[text()='Ownership ']/following-sibling::div");
         OwnerShip.click();
         log.info("ownership is clicked");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         js.executeScript("window.scrollBy(0,1000)");
         log.info("scroll happens...");
 
@@ -336,17 +375,17 @@ public class AddVehicle {
 
 
 
-        WebElement Vown=((ChromeDriver) driver).findElementByXPath("//label[text()='Vehicle Owner']/following-sibling::input");
+        WebElement Vown=((ChromeDriver) driver).findElementByXPath("//label[text()='Vehicle Owner Name']/following-sibling::input");
         Vown.clear();
         Vown.sendKeys(Vownnam);
         log.info("owner added "+Vownnam);
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         WebElement SplimiterType=((ChromeDriver) driver).findElementByXPath("(//div[contains(@class,'ant-select-selection__rendered')])[6]");
         SplimiterType.click();
         log.info("speed limiter choosed");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         //select which department
         String speedLimit ="//li[text()='Cable Control']";
         WebElement choosespeedLimit=((ChromeDriver) driver).findElementByXPath(speedLimit);
@@ -354,7 +393,7 @@ public class AddVehicle {
         log.info("choosespeedLimit is selected.");
 
 
-        WebElement SNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Serial Number']/following-sibling::input");
+        WebElement SNo=((ChromeDriver) driver).findElementByXPath("//label[text()='Limiter Serial']/following-sibling::input");
         SNo.clear();
         SNo.sendKeys(SerNo);
         log.info("Year added");
@@ -365,7 +404,7 @@ public class AddVehicle {
         log.info("Year added");
 
 
-        WebElement TName=((ChromeDriver) driver).findElementByXPath("//label[text()='Technician Name']/following-sibling::input");
+        WebElement TName=((ChromeDriver) driver).findElementByXPath("//label[text()='Fitting Agents Name']/following-sibling::input");
         TName.clear();
         TName.sendKeys(TechNam);
         log.info("Tech added");
@@ -376,7 +415,7 @@ public class AddVehicle {
 
         log.info("Appstd clicked");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         //select which department
         String Apstd ="//li[text()='"+Applstd+"']";
         WebElement chooseAppStd=((ChromeDriver) driver).findElementByXPath(Apstd);
@@ -391,7 +430,7 @@ public class AddVehicle {
         log.info("Installed country added");
 
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         WebElement Save=((ChromeDriver) driver).findElementByXPath("//span[text()='Save']/ancestor::button[@class='ant-btn rone-btn']");
         Save.click();

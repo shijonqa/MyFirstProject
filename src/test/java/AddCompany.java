@@ -73,7 +73,7 @@ public class AddCompany {
         Thread.sleep(6000);
 
 
-        WebDriverWait wait=new WebDriverWait(driver, 20);
+        WebDriverWait wait=new WebDriverWait(driver, 1000);
 
         WebElement MainMenu=((ChromeDriver) driver).findElementByXPath("//img[@alt='Menu' and @class='rone-menu-show']");
         MainMenu.click();
@@ -238,7 +238,7 @@ public class AddCompany {
         log.info("Time zone is clicked.");
 
         Thread.sleep(1000);
-        WebElement TimeZoneClick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'Ethiopia (GMT +3)')]");
+        WebElement TimeZoneClick=((ChromeDriver) driver).findElementByXPath("//li[contains(.,'Africa/Mauritius')]");
         TimeZoneClick.click();
         log.info("Time zone is choosen.");
 
@@ -272,11 +272,18 @@ public class AddCompany {
                 .pollingEvery(5, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
 
-        WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("(//span[contains(.,'Company added sucessfully')])[2]"));
-            }
-        });
+        try {
+            WebElement message = fluwait.until(new Function<WebDriver, WebElement>() {
+                public WebElement apply(WebDriver driver) {
+                    return driver.findElement(By.xpath("(//span[contains(.,'Company added sucessfully')])[2]"));
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            log.info("success message doesn't appears"+Cname);
+
+        }
         Thread.sleep(3000);
 
     }
